@@ -59,7 +59,7 @@ if ($withAriaNg) {
     .\snoop.ps1 -withAriaNg
 }
 else {
-    .\snoop.ps1s
+    .\snoop.ps1
 }
 
 Start-Aria
