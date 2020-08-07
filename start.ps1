@@ -1,3 +1,7 @@
+param (
+    [switch]$withAriaNg
+)
+
 function Start-Aria {
     $config = Get-Content .\config.json | ConvertFrom-Json
     $cmd = ""
@@ -36,21 +40,27 @@ function Start-AriaNg {
     elseif ($config.ariang -eq "raw") {
         $target = ""
         foreach ($item in (Get-ChildItem ariang -Recurse)) {
-            if($item.Name -like "*index*"){
+            if ($item.Name -like "*index*") {
                 $target = $item.FullName
                 Start-Process $target
             }
         }
-        if($target -eq ""){
+        if ($target -eq "") {
             Write-Warning "No AriaNg found, you might need to reinstall by .\reinstall.ps"
-        }else{
+        }
+        else {
             Start-Process $target
         }
     }
     
 }
 
-.\snoop.ps1
+if ($withAriaNg) {
+    .\snoop.ps1 -withAriaNg
+}
+else {
+    .\snoop.ps1s
+}
 
 Start-Aria
 

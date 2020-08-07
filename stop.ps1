@@ -1,5 +1,5 @@
 param (
-    [bool]$byName = $false
+    [switch]$byName = $false
 )
 
 function Stop-Componet {
@@ -33,4 +33,9 @@ function Stop-Componet {
     
 }
 
-Stop-Componet $byName
+if ($byName) {
+    Stop-Componet $true
+}
+else {
+    Stop-Componet
+}

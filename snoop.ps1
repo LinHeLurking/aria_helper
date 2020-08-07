@@ -1,3 +1,7 @@
+param (
+    [switch]$withAriaNg=$false
+)
+
 function Test-Command {
     param (
         [String]$commandName
@@ -122,10 +126,8 @@ function Get-Componet {
     $config = Get-Content .\config.json | ConvertFrom-Json
     $success = $true
 
-    # if (!(Test-Command aria2c)) {
-    if (1) {
-        # if ($hasScoop) {
-        if (0) {
+    if (!(Test-Command aria2c)) {
+        if ($hasScoop) {
             scoop install aria2
             if (!$?) {
                 $success = $false
@@ -147,27 +149,27 @@ function Get-Componet {
         $config.aria2c = "path"
     }
 
-    # if ($hasNpm) {
-    if (0) {
-        Write-Host "Npm detected. Install http-server by npm"
-        npm install http-server
-        if (!$?) {
+    if ($withAriaNg) {
+        if ($hasNpm) {
+            Write-Host "Npm detected. Install http-server by npm"
+            npm install http-server
+            if (!$?) {
+                $success = $false
+            }
+            $config.ariang = "npm"
+        }
+        else {
+            $config.ariang = "raw"
+        }
+        $ngstatus = (GetAriaNgFromUrl($config))
+        if (!$ngstatus) {
             $success = $false
         }
-        $config.ariang = "npm"
-    }
-    else {
-        $config.ariang = "raw"
-    }
-    $ngstatus = (GetAriaNgFromUrl($config))
-    if (!$ngstatus) {
-        $success = $false
     }
 
     if ($success) {
         $config | ConvertTo-Json | Set-Content .\config.json
     }
-
     return $success
 }
 
