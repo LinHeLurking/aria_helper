@@ -64,4 +64,7 @@ else {
 
 Start-Aria
 
-Start-AriaNg
+if ($withAriaNg) {
+    Start-AriaNg
+}
+
